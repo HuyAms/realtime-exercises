@@ -39,4 +39,6 @@ async function getNewMsgs() {
 ```
 
 ### requestAnimationFrame
-When we are away from the window, it shouldn't be polling the new messages. 
+When we are away from the window, it shouldn't be polling the new messages. It costs compute resources. Instead, we should only run the pooling when users focus on the window.
+
+Solution: use `requestAnimationFrame` instead of the `setTimeout`
