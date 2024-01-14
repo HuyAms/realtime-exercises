@@ -14,4 +14,29 @@ This strategy is to make lots of requests, we will keep making requests over and
 
 We need to make an endpoint that can take a lot of calls. We couldn't use the `setInterval` to run a function on every X seconds as it doesn't account for the time that server takes to process a requests. eg: we make a request every 3 secs but API takes 4 secs to respond.
 
-Instead, need to start a timer for the next requests as soon as the current one completes.
+Instead, need to start a timer `setTimeout` for the next requests as soon as the current one completes.
+
+```js
+async function getNewMsgs() {
+  // poll the server
+  // write code here
+
+  let json;
+
+  try {
+    const res = await fetch("/poll")
+    json = await res.json()
+  } catch (e) {
+    // backoff code
+    console.error("polling error: ", e)
+  }
+
+  allChat = json.msg
+  render()
+
+  setTimeout(getNewMsgs, INTERVAL)
+}
+```
+
+### requestAnimationFrame
+When we are away from the window, it shouldn't be polling the new messages. 
